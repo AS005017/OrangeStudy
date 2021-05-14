@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">OrangeStudy</string>
+    <string name="retry">Retry</string>
+    <string name="error_try">Please try again</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description">Description</string>
+    <string name="seasons">Seasons</string>
+    <string name="seasonsName">Seasons: </string>
+    <string name="last_air_date">Last air date: </string>
+    <string name="offline">Offline mode</string>
+    <string name="seasons_offline">Seasons not available in offline mode</string>
+    <string name="you_in_offline">You are offline, please connect to the internet</string>
+    <string name="episodesName">Episodes: </string>
+    <string name="somthingWrong">Something went wrong</string>
+</resources>

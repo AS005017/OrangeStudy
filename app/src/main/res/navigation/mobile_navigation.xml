@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_tv">
+
+    <fragment
+        android:id="@+id/navigation_tv"
+        android:name="com.labs.orangestudy.ui.main.view.TvFragment"
+        android:label="fragment_tv"
+        tools:layout="@layout/fragment_tv" >
+        <action
+            android:id="@+id/navigationTvToDetailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.labs.orangestudy.ui.main.view.DetailFragment"
+        android:label="DetailFragment"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue= "0"/>
+    </fragment>
+
+
+</navigation>

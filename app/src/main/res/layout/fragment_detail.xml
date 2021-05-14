@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressBarDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/detail_tv_cover"
+            android:layout_width="match_parent"
+            android:layout_height="225dp"
+            android:foreground="@drawable/gradient_bg"
+            android:foregroundTintMode="screen"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"/>
+
+        <ImageView
+            android:id="@+id/back_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:padding="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/detail_tv_img"
+            android:layout_width="150dp"
+            android:layout_height="220dp"
+            android:layout_marginStart="16dp"
+            android:foreground="@drawable/gradient_bg"
+            android:foregroundTintMode="screen"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_tv_cover"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_cover"
+            tools:src="@drawable/ic_launcher_foreground" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_baseline_favorite_24"
+            app:backgroundTint="@color/purple_500"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_tv_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.955"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_cover"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/detail_tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="16dp"
+            tools:text="TextView"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toStartOf="@id/fab_detail"
+            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintStart_toEndOf="@+id/detail_tv_img"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_cover" />
+
+        <TextView
+            android:id="@+id/detail_tv_genres"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            tools:text="TextView"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_tv_img"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_rate" />
+
+        <TextView
+            android:id="@+id/detail_tv_lastAirDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            tools:text="TextView"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_tv_lastAirDate_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_seasonsCount" />
+
+        <TextView
+            android:id="@+id/detail_tv_lastAirDate_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/last_air_date"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toStartOf="@id/detail_tv_lastAirDate"
+            app:layout_constraintStart_toEndOf="@+id/detail_tv_img"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_seasonsCount_name" />
+
+        <TextView
+            android:id="@+id/detail_tv_seasonsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            tools:text="TextView"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toEndOf="@+id/detail_tv_seasonsCount_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_genres" />
+
+        <TextView
+            android:id="@+id/detail_tv_seasonsCount_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/seasonsName"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="@+id/detail_tv_lastAirDate_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_genres" />
+
+
+        <TextView
+            android:id="@+id/detail_tv_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="100%"
+            android:textColor="@color/purple_500"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_tv_genres"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/fab_detail"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/detail_tv_desc_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:lineSpacingExtra="8dp"
+            android:text="@string/description"
+            android:textAllCaps="false"
+            android:textColor="@color/purple_500"
+            app:layout_constraintBottom_toTopOf="@id/detail_tv_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_lastAirDate_name"/>
+
+        <TextView
+            android:id="@+id/detail_tv_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:lineSpacingExtra="8dp"
+            android:paddingBottom="10dp"
+            tools:text="test text test text test text test text test text test text test text test text test text "
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_desc_name" />
+
+        <TextView
+            android:id="@+id/detail_tv_seasons_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:lineSpacingExtra="8dp"
+            android:text="@string/seasons"
+            android:textAllCaps="false"
+            android:textColor="@color/purple_500"
+            app:layout_constraintBottom_toTopOf="@id/Rv_seasons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_desc"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/Rv_seasons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:paddingBottom="15dp"
+            tools:listitem="@layout/item_season"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tv_seasons_name"/>
+
+        
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

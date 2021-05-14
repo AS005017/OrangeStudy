@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    app:cardBackgroundColor="@color/purple_700"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="7dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/tv_img"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:foreground="@drawable/gradient_bg"
+            android:foregroundTintMode="screen"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_launcher_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            tools:text="100%"
+            android:textColor="@color/purple_500"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_img"
+            app:layout_constraintEnd_toEndOf="@+id/tv_img"
+            app:layout_constraintHorizontal_bias="0.94"
+            app:layout_constraintStart_toStartOf="@id/tv_img"
+            app:layout_constraintTop_toTopOf="@+id/tv_img"
+            app:layout_constraintVertical_bias="0.060000002" />
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            tools:text="TextView"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_img"
+            app:layout_constraintEnd_toEndOf="@+id/tv_img"
+            app:layout_constraintStart_toStartOf="@+id/tv_img"
+            app:layout_constraintTop_toTopOf="@+id/tv_img"
+            app:layout_constraintVertical_bias="1.06" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
