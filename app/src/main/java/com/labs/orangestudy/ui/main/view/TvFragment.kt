@@ -58,7 +58,7 @@ class TvFragment : Fragment(R.layout.fragment_tv) {
 
         tvViewModel.tvPagedListLiveData.observe(viewLifecycleOwner) { pagedList ->
                 tvAdapter.submitList(pagedList)
-                Log.e("TvList", pagedList.positionOffset.toString())
+                Log.e("TvList", pagedList.size.toString())
             }
 
         tvViewModel.networkState.observe(viewLifecycleOwner){

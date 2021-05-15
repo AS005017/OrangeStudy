@@ -84,13 +84,17 @@ class TvAdapterPagedList(private val realm: Realm): PagedListAdapter<Tv,Recycler
 //        return super.getItemCount() + if (hasExtraRow()) 1 else 0
 //    }
 
-
-//    private fun getCurrSize(): Int? {
+//    override fun getItemCount(): Int {
+//        return getCurrSize()
+//    }
+//
+//
+//    private fun getCurrSize(): Int {
 //        if (currSize != currentList?.size && !currentList.isNullOrEmpty()){
 //            currentList?.let { currSize = it.size }
 //            currentList?.let { addTvToDB(it) }
 //            Log.e("MyLogs", currentList?.size.toString())
-//            return currentList?.size
+//            return currentList?.size!!
 //        } else if (currSize == currentList?.size) {
 //            return currSize
 //        }
