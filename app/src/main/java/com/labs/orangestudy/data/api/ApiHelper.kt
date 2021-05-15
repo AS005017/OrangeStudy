@@ -11,8 +11,8 @@ class ApiHelper @Inject constructor(private val api : TvApi) {
         return safeApiCall { api.getTvById(tvId) }
     }
 
-    suspend fun getTvPage(pageIndex: Int): Response<TvResponse> {
-        return api.getPopularTv(pageIndex)
+    suspend fun getPopularTv(pageIndex: Int): SimpleResponse<TvResponse> {
+        return safeApiCall { api.getPopularTv(pageIndex) }
     }
 
     private inline fun <T> safeApiCall(apiCall: () -> Response<T>): SimpleResponse<T> {
