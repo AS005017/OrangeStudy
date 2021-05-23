@@ -31,7 +31,7 @@ class TvAdapterPagedList(private val realm: Realm): PagedListAdapter<Tv,Recycler
 //    private var __binding: ErrorStateBinding? = null
 //    private val binding get() = _binding!!
 //    private val bbinding get() = __binding!!
-//    private var currSize: Int = 0
+    private var currSize: Int = 0
 
 //    val MOVIE_VIEW_TYPE = 1
 //    val NETWORK_VIEW_TYPE = 2
@@ -83,22 +83,22 @@ class TvAdapterPagedList(private val realm: Realm): PagedListAdapter<Tv,Recycler
 //        return super.getItemCount() + if (hasExtraRow()) 1 else 0
 //    }
 
-//    override fun getItemCount(): Int {
-//        return getCurrSize()
-//    }
-//
-//
-//    private fun getCurrSize(): Int {
-//        if (currSize != currentList?.size && !currentList.isNullOrEmpty()){
-//            currentList?.let { currSize = it.size }
-//            currentList?.let { addTvToDB(it) }
-//            Log.e("MyLogs", currentList?.size.toString())
-//            return currentList?.size!!
-//        } else if (currSize == currentList?.size) {
-//            return currSize
-//        }
-//        return 0
-//    }
+    override fun getItemCount(): Int {
+        return getCurrSize()
+    }
+
+
+    private fun getCurrSize(): Int {
+        if (currSize != currentList?.size && !currentList.isNullOrEmpty()){
+            currentList?.let { currSize = it.size }
+            currentList?.let { addTvToDB(it) }
+            Log.e("MyLogsCurrSize", currentList?.size.toString())
+            return currentList?.size!!
+        } else if (currSize == currentList?.size) {
+            return currSize
+        }
+        return 0
+    }
 
 //    override fun getItemViewType(position: Int): Int {
 //        return if (hasExtraRow() && position == itemCount - 1) {
@@ -108,18 +108,18 @@ class TvAdapterPagedList(private val realm: Realm): PagedListAdapter<Tv,Recycler
 //        }
 //    }
 
-//    private fun addTvToDB(list: PagedList<Tv>) {
-//        try {
-//            realm.beginTransaction()
-//
-//            realm.copyToRealmOrUpdate(list)
-//            realm.commitTransaction()
-//            Log.e("myLogsDB",list.size.toString())
-//
-//        } catch (e:Exception) {
-//            Log.e("myLogs", "Error ${e.message}")
-//        }
-//    }
+    private fun addTvToDB(list: PagedList<Tv>) {
+        try {
+            realm.beginTransaction()
+
+            realm.copyToRealmOrUpdate(list)
+            realm.commitTransaction()
+            Log.e("myLogsDBadd",list.size.toString())
+
+        } catch (e:Exception) {
+            Log.e("myLogsDB", "Error ${e.message}")
+        }
+    }
 
     inner class TvItemViewHolder (private val binding: ItemTvBinding): RecyclerView.ViewHolder(binding.root) {
 

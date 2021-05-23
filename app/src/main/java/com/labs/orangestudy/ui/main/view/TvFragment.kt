@@ -80,7 +80,9 @@ class TvFragment : Fragment(R.layout.fragment_tv) {
 
     override fun onDestroy() {
         super.onDestroy()
-        realm.deleteAll() //clear realm db?
+//        realm.beginTransaction()
+//        realm.deleteAll() //clear realm db?
+//        realm.commitTransaction()
         _binding = null
     }
 }

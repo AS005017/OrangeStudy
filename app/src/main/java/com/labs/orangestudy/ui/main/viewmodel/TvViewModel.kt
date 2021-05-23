@@ -7,6 +7,7 @@ import com.labs.orangestudy.utils.NetworkState
 import com.labs.orangestudy.data.paging.TvDataSourceFactory
 import com.labs.orangestudy.data.api.TvApi
 import com.labs.orangestudy.data.model.Tv
+import com.labs.orangestudy.data.paging.TvBoundaryCallback
 import com.labs.orangestudy.data.paging.TvDataSource
 import com.labs.orangestudy.data.repository.TvRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,9 +27,10 @@ class TvViewModel @Inject constructor  (private val repository: TvRepository) : 
         .setPrefetchDistance(TvApi.PREFETCH_DISTANCE)
         .build()
 
+    private val tvBoundaryCallback = TvBoundaryCallback(viewModelScope, repository)
     private val dataSourceFactory = TvDataSourceFactory(viewModelScope, repository)
     val tvPagedListLiveData: LiveData<PagedList<Tv>> =
-        LivePagedListBuilder(dataSourceFactory,pageListConfig).build()
+        LivePagedListBuilder(dataSourceFactory,pageListConfig).setBoundaryCallback(tvBoundaryCallback).build()
 
     fun listIsEmpty(): Boolean {
         return tvPagedListLiveData.value?.isEmpty() ?: true

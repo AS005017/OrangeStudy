@@ -7,6 +7,7 @@ import com.labs.orangestudy.utils.NetworkState
 import com.labs.orangestudy.data.api.TvApi
 import com.labs.orangestudy.data.model.Tv
 import com.labs.orangestudy.data.repository.TvRepository
+import io.realm.Realm
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -23,6 +24,9 @@ class TvDataSource(
     ) {
         networkState.postValue(NetworkState.LOADING)
         coroutineScope.launch {
+            val request = Realm.getDefaultInstance().where(Tv::class.java).findAll()
+            Log.e("myLogsTestDS", request.size.toString())
+
             val response = repository.getTvList(page)
             if (response == null) {
                 //callback.onResult(emptyList(),null,null)
@@ -41,6 +45,9 @@ class TvDataSource(
     ) {
         networkState.postValue(NetworkState.LOADING)
         coroutineScope.launch {
+            val request = Realm.getDefaultInstance().where(Tv::class.java).findAll()
+            Log.e("myLogsTestDS", request.size.toString())
+
             val response = repository.getTvList(params.key)
             if (response == null) {
                 //callback.onResult(emptyList(),null)
