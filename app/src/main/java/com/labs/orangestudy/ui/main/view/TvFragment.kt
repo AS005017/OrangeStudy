@@ -61,17 +61,20 @@ class TvFragment : Fragment(R.layout.fragment_tv) {
                 Log.e("TvList", pagedList.size.toString())
             }
 
-        tvViewModel.networkState.observe(viewLifecycleOwner){
-            binding.progressBarTv.visibility = if (tvViewModel.listIsEmpty() && it == NetworkState.LOADING) View.VISIBLE else View.GONE
-            binding.txtErrorPopular.visibility = if (tvViewModel.listIsEmpty() && it == NetworkState.ERROR) View.VISIBLE else View.GONE
+        tvViewModel.networkState.observe(viewLifecycleOwner) {
+            binding.progressBarTv.visibility =
+                if (tvViewModel.listIsEmpty() && it == NetworkState.LOADING) View.VISIBLE else View.GONE
+            binding.txtErrorPopular.visibility =
+                if (tvViewModel.listIsEmpty() && it == NetworkState.ERROR) View.VISIBLE else View.GONE
 
 //            if (!tvViewModel.listIsEmpty()) {
 //                tvAdapter.setNetworkState(it)
 //            }
 //        }
-//        tvAdapter.onItemClick = { tv->
-//            val action = TvFragmentDirections.navigationTvToDetailFragment(tv.id)
-//            Navigation.findNavController(binding.root).navigate(action)
+            tvAdapter.onItemClick = { tv ->
+                val action = TvFragmentDirections.navigationTvToDetailFragment(tv.id)
+                Navigation.findNavController(binding.root).navigate(action)
+            }
         }
     }
 

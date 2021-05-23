@@ -26,10 +26,10 @@ import io.realm.Realm.init
 
 class TvAdapterPagedList(private val realm: Realm): PagedListAdapter<Tv,RecyclerView.ViewHolder>(TvDiffCallback()) {
 
-//    var onItemClick: ((Tv) -> Unit)? = null
-    private var _binding: ItemTvBinding? = null
+    var onItemClick: ((Tv) -> Unit)? = null
+//    private var _binding: ItemTvBinding? = null
 //    private var __binding: ErrorStateBinding? = null
-    private val binding get() = _binding!!
+//    private val binding get() = _binding!!
 //    private val bbinding get() = __binding!!
 //    private var currSize: Int = 0
 
@@ -58,8 +58,7 @@ class TvAdapterPagedList(private val realm: Realm): PagedListAdapter<Tv,Recycler
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 //        if (viewType == MOVIE_VIEW_TYPE) {
-            _binding = ItemTvBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return TvItemViewHolder(binding.root)
+            return TvItemViewHolder(ItemTvBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 //        } else {
 //            __binding = ErrorStateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 //            return NetworkStateItemViewHolder(bbinding.root)
@@ -68,7 +67,7 @@ class TvAdapterPagedList(private val realm: Realm): PagedListAdapter<Tv,Recycler
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 //               if (getItemViewType(position) == MOVIE_VIEW_TYPE) {
-            (holder as TvItemViewHolder).bindPost(getItem(position))
+        getItem(position)?.let { (holder as TvItemViewHolder).bindPost(it) }
 //        }
 //        else {
 //            (holder as NetworkStateItemViewHolder).bindPost(networkState)
@@ -122,20 +121,19 @@ class TvAdapterPagedList(private val realm: Realm): PagedListAdapter<Tv,Recycler
 //        }
 //    }
 
-    inner class TvItemViewHolder (view: View): RecyclerView.ViewHolder(view) {
+    inner class TvItemViewHolder (private val binding: ItemTvBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bindPost(tv: Tv?) {
-            with(tv){
-                binding.tvTitle.text = this?.name
-                binding.tvRate.text = this?.voteAverage.toString()
+        fun bindPost(tv: Tv) {
+                binding.tvTitle.text = tv.name
+                binding.tvRate.text = tv.voteAverage.toString()
                 Picasso.get()
-                    .load(TvApi.POSTER_BASE_URL + this?.posterPath)
+                    .load(TvApi.POSTER_BASE_URL + tv.posterPath)
                     .placeholder(R.drawable.loading)
                     .into(binding.tvImg)
-//                itemView.setOnClickListener {
-//                    onItemClick?.invoke(this!!)
-//                }
-            }
+                itemView.setOnClickListener {
+                    onItemClick?.invoke(tv)
+                }
+
 
        }
     }

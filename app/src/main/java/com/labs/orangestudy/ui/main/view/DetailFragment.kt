@@ -92,9 +92,9 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
                 var genres = ""
                 var i = 0
-                response.genres.forEach { genre ->
+                response.genres?.forEach { genre ->
                     genres += genre.name
-                    if (i < response.genres.size-1) {
+                    if (i < response.genres!!.size-1) {
                         genres += ", "
                         i++
                     }
@@ -103,7 +103,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                 binding.detailTvGenres.text = genres
 
                 binding.RvSeasons.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
-                binding.RvSeasons.adapter = SeasonsAdapter(response.seasons)
+                binding.RvSeasons.adapter = response.seasons?.let { SeasonsAdapter(it) }
 
             }
         if (!isConnected())   {
