@@ -25,7 +25,7 @@ class TvDataSource(
         coroutineScope.launch {
             val response = repository.getTvList(page)
             if (response == null) {
-                callback.onResult(emptyList(),null,null)
+                //callback.onResult(emptyList(),null,null)
                 networkState.postValue(NetworkState.ERROR)
                 return@launch
             }
@@ -43,7 +43,7 @@ class TvDataSource(
         coroutineScope.launch {
             val response = repository.getTvList(params.key)
             if (response == null) {
-                callback.onResult(emptyList(),null)
+                //callback.onResult(emptyList(),null)
                 networkState.postValue(NetworkState.ERROR)
                 return@launch
             }
