@@ -1,40 +1,38 @@
 package com.labs.orangestudy.data.paging
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PageKeyedDataSource
 import com.labs.orangestudy.utils.NetworkState
 import com.labs.orangestudy.data.api.TvApi
 import com.labs.orangestudy.data.model.Tv
 import com.labs.orangestudy.data.repository.TvRepository
-import io.realm.Realm
+import com.magora.realmpaginator.RealmPageKeyedDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class TvDataSource(
     private val coroutineScope: CoroutineScope,
-    private val repository: TvRepository): PageKeyedDataSource<Int, Tv>() {
+    private val repository: TvRepository,
+    private val localStorageSource: TvDataStorageSource.LocalTvStorage
+): RealmPageKeyedDataSource<Int, Tv>() {
 
-    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+//    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
     private var page = TvApi.FIRST_PAGE
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Tv>
     ) {
-        networkState.postValue(NetworkState.LOADING)
+//        networkState.postValue(NetworkState.LOADING)
         coroutineScope.launch {
-            val request = Realm.getDefaultInstance().where(Tv::class.java).findAll()
-            Log.e("myLogsTestDS", request.size.toString())
-
-            val response = repository.getTvList(page)
+            val response = repository.getTvList(params.initialKey!!)
             if (response == null) {
                 //callback.onResult(emptyList(),null,null)
-                networkState.postValue(NetworkState.ERROR)
+//                networkState.postValue(NetworkState.ERROR)
                 return@launch
             }
-            callback.onResult(response.results,null,page+1)
-            networkState.postValue(NetworkState.LOADED)
+            localStorageSource.putTvs(response.results)
+            callback.onResult(response.results.size,null,params.initialKey!!+1)
+//            networkState.postValue(NetworkState.LOADED)
         }
     }
 
@@ -43,22 +41,20 @@ class TvDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, Tv>
     ) {
-        networkState.postValue(NetworkState.LOADING)
+//        networkState.postValue(NetworkState.LOADING)
         coroutineScope.launch {
-            val request = Realm.getDefaultInstance().where(Tv::class.java).findAll()
-            Log.e("myLogsTestDS", request.size.toString())
-
             val response = repository.getTvList(params.key)
             if (response == null) {
                 //callback.onResult(emptyList(),null)
-                networkState.postValue(NetworkState.ERROR)
+//                networkState.postValue(NetworkState.ERROR)
                 return@launch
             }
             if (params.key <= response.totalPages) {
-                callback.onResult(response.results, params.key + 1)
-                networkState.postValue(NetworkState.LOADED)
+                localStorageSource.putTvs(response.results)
+                callback.onResult(response.results.size, params.key + 1)
+//                networkState.postValue(NetworkState.LOADED)
             } else {
-                networkState.postValue(NetworkState.ENDOFLIST)
+//                networkState.postValue(NetworkState.ENDOFLIST)
             }
         }
     }

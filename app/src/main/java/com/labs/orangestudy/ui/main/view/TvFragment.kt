@@ -32,7 +32,7 @@ class TvFragment : Fragment(R.layout.fragment_tv) {
     private val binding get() = _binding!!
 
     private lateinit var tvAdapter: TvAdapterPagedList
-    private lateinit var realm: Realm
+//    private lateinit var realm: Realm
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +45,7 @@ class TvFragment : Fragment(R.layout.fragment_tv) {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        realm = Realm.getDefaultInstance()
+//        realm = Realm.getDefaultInstance()
         setupRVandGetData()
 
     }
@@ -53,29 +53,29 @@ class TvFragment : Fragment(R.layout.fragment_tv) {
     private fun setupRVandGetData() {
         binding.rvTv.layoutManager = LinearLayoutManager(requireContext())
 
-        tvAdapter = TvAdapterPagedList(realm)
-        binding.rvTv.adapter = tvAdapter
+        //tvAdapter = TvAdapterPagedList(realm)
+        binding.rvTv.adapter = TvAdapterPagedList(tvViewModel.tvPagedListLiveData)
 
-        tvViewModel.tvPagedListLiveData.observe(viewLifecycleOwner) { pagedList ->
-                tvAdapter.submitList(pagedList)
-                Log.e("TvList", pagedList.size.toString())
-            }
-
-        tvViewModel.networkState.observe(viewLifecycleOwner) {
-            binding.progressBarTv.visibility =
-                if (tvViewModel.listIsEmpty() && it == NetworkState.LOADING) View.VISIBLE else View.GONE
-            binding.txtErrorPopular.visibility =
-                if (tvViewModel.listIsEmpty() && it == NetworkState.ERROR) View.VISIBLE else View.GONE
+//        tvViewModel.tvPagedListLiveData.observe(viewLifecycleOwner) { pagedList ->
+//                tvAdapter.submitList(pagedList)
+//                Log.e("TvList", pagedList.size.toString())
+//            }
+//
+//        tvViewModel.networkState.observe(viewLifecycleOwner) {
+//            binding.progressBarTv.visibility =
+//                if (tvViewModel.listIsEmpty() && it == NetworkState.LOADING) View.VISIBLE else View.GONE
+//            binding.txtErrorPopular.visibility =
+//                if (tvViewModel.listIsEmpty() && it == NetworkState.ERROR) View.VISIBLE else View.GONE
 
 //            if (!tvViewModel.listIsEmpty()) {
 //                tvAdapter.setNetworkState(it)
 //            }
 //        }
-            tvAdapter.onItemClick = { tv ->
-                val action = TvFragmentDirections.navigationTvToDetailFragment(tv.id)
-                Navigation.findNavController(binding.root).navigate(action)
-            }
-        }
+//            tvAdapter.onItemClick = { tv ->
+//                val action = TvFragmentDirections.navigationTvToDetailFragment(tv.id)
+//                Navigation.findNavController(binding.root).navigate(action)
+//            }
+//        }
     }
 
     override fun onDestroy() {

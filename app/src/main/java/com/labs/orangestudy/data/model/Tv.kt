@@ -1,11 +1,15 @@
 package com.labs.orangestudy.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmList
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.realm.annotations.Ignore
 import io.realm.annotations.PrimaryKey
+import io.realm.annotations.RealmClass
 
+@RealmClass
 open class Tv(
     @SerializedName("backdrop_path") var backdropPath: String? = "",
     @SerializedName("last_air_date") var lastAirDate: String = "",
@@ -24,4 +28,10 @@ open class Tv(
     @SerializedName("vote_average") var voteAverage: Double = 0.0,
     @SerializedName("vote_count") var voteCount: Int = 0,
     var favorite: Boolean = false
-    ) : RealmObject()
+    ) : RealmModel
+
+@RealmClass
+open class TvList : RealmModel {
+    lateinit var tvs: RealmList<Tv>
+    var lastUpdateTimestamp: Long = 0
+}

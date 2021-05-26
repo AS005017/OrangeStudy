@@ -15,7 +15,7 @@ interface TvApi {
         const val POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500/"
         const val FIRST_PAGE = 1
         const val POST_PER_PAGE = 20
-        const val PREFETCH_DISTANCE = POST_PER_PAGE
+        const val PREFETCH_DISTANCE = 2
     }
 
     @GET("tv/popular?api_key=$API_KEY")

@@ -11,9 +11,9 @@ class TvApplication : Application() {
         super.onCreate()
         Realm.init(this)
         val configuration = RealmConfiguration.Builder()
-            .name("Tv.db")
+            .name("Tvs.db")
             .deleteRealmIfMigrationNeeded()
-            .schemaVersion(0)
+            .schemaVersion(1)
             .build()
         Realm.setDefaultConfiguration(configuration)
     }
