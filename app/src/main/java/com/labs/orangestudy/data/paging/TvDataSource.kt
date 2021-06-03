@@ -1,5 +1,6 @@
 package com.labs.orangestudy.data.paging
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.labs.orangestudy.utils.NetworkState
 import com.labs.orangestudy.data.api.TvApi
@@ -15,24 +16,27 @@ class TvDataSource(
     private val localStorageSource: TvDataStorageSource.LocalTvStorage
 ): RealmPageKeyedDataSource<Int, Tv>() {
 
-//    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
-    private var page = TvApi.FIRST_PAGE
+    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Tv>
     ) {
-//        networkState.postValue(NetworkState.LOADING)
+        networkState.postValue(NetworkState.LOADING)
         coroutineScope.launch {
-            val response = repository.getTvList(params.initialKey!!)
-            if (response == null) {
-                //callback.onResult(emptyList(),null,null)
-//                networkState.postValue(NetworkState.ERROR)
-                return@launch
+            val dbCheck = localStorageSource.getTvs()
+            if (dbCheck.tvs.size == 0) {
+                val response = repository.getTvList(params.initialKey!!)
+                if (response == null) {
+                networkState.postValue(NetworkState.ERROR)
+                    return@launch
+                }
+                localStorageSource.putTvs(response.results, response.page)
+                callback.onResult(response.results.size, null, response.page + 1)
+            } else {
+                callback.onResult(dbCheck.tvs.size, null, dbCheck.page + 1)
             }
-            localStorageSource.putTvs(response.results)
-            callback.onResult(response.results.size,null,params.initialKey!!+1)
-//            networkState.postValue(NetworkState.LOADED)
+            networkState.postValue(NetworkState.LOADED)
         }
     }
 
@@ -41,20 +45,19 @@ class TvDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, Tv>
     ) {
-//        networkState.postValue(NetworkState.LOADING)
+        networkState.postValue(NetworkState.LOADING)
         coroutineScope.launch {
             val response = repository.getTvList(params.key)
             if (response == null) {
-                //callback.onResult(emptyList(),null)
-//                networkState.postValue(NetworkState.ERROR)
+                networkState.postValue(NetworkState.ERROR)
                 return@launch
             }
             if (params.key <= response.totalPages) {
-                localStorageSource.putTvs(response.results)
+                localStorageSource.putTvsNextPage(response.results, response.page)
                 callback.onResult(response.results.size, params.key + 1)
-//                networkState.postValue(NetworkState.LOADED)
+                networkState.postValue(NetworkState.LOADED)
             } else {
-//                networkState.postValue(NetworkState.ENDOFLIST)
+                networkState.postValue(NetworkState.ENDOFLIST)
             }
         }
     }

@@ -1,10 +1,13 @@
 package com.labs.orangestudy.data.paging
 
+import android.util.Log
 import androidx.annotation.UiThread
 import com.labs.orangestudy.data.model.Tv
 import com.labs.orangestudy.data.model.TvList
 import io.realm.Realm
 import io.realm.RealmChangeListener
+import io.realm.RealmList
+import io.realm.RealmResults
 import io.realm.kotlin.addChangeListener
 import io.realm.kotlin.createObject
 import io.realm.kotlin.isValid
@@ -17,8 +20,8 @@ class TvDataStorageSource {
         fun putTv(Tv: Tv)
         fun getTv(id: Int): Tv?
         suspend fun getTvAsync(id: Int): Tv?
-        fun putTvs(Tvs: Collection<Tv>)
-        fun putTvsNextPage(Tvs: Collection<Tv>)
+        fun putTvs(Tvs: Collection<Tv>, page: Int)
+        fun putTvsNextPage(Tvs: Collection<Tv>, page: Int)
         fun getTvs(): TvList
 
         suspend fun getTvsAsync(): TvList
@@ -45,6 +48,18 @@ class TvDataStorageSource {
         }
 
         @UiThread
+        suspend fun findTvAsync(name: String): RealmResults<Tv> = suspendCancellableCoroutine { continuation ->
+            with(ensureRealmCreated()) {
+                val tvWrapper = where<Tv>().equalTo("name", name).findAllAsync()
+                tvWrapper.addChangeListener(RealmChangeListener { tv ->
+                    if (tv.isValid()) {
+                        continuation.resume(tv)
+                    }
+                })
+            }
+        }
+
+        @UiThread
         override suspend fun getTvAsync(id: Int): Tv? = suspendCancellableCoroutine { continuation ->
             with(ensureRealmCreated()) {
                 val tvWrapper = where<Tv>().equalTo("id", id).findFirstAsync()
@@ -56,7 +71,7 @@ class TvDataStorageSource {
             }
         }
 
-        override fun putTvs(Tvs: Collection<Tv>) {
+        override fun putTvs(Tvs: Collection<Tv>, page: Int) {
             withAsyncTransaction {
                 var cached = where<TvList>().findFirst()
                 if (cached != null) {
@@ -67,10 +82,11 @@ class TvDataStorageSource {
                     cached.tvs.addAll(Tvs)
                 }
                 cached.lastUpdateTimestamp = System.currentTimeMillis()
+                cached.page = page
             }
         }
 
-        override fun putTvsNextPage(Tvs: Collection<Tv>) {
+        override fun putTvsNextPage(Tvs: Collection<Tv>, page: Int) {
             withAsyncTransaction {
                 var cached = where<TvList>().findFirst()
                 if (cached != null) {
@@ -80,8 +96,10 @@ class TvDataStorageSource {
                     cached.tvs.addAll(Tvs)
                 }
                 cached.lastUpdateTimestamp = System.currentTimeMillis()
+                cached.page = page
             }
         }
+
 
         override fun getTvs(): TvList = with(ensureRealmCreated()) {
             var Tvs = where<TvList>().findFirst()

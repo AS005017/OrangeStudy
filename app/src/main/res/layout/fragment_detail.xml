@@ -58,20 +58,6 @@
             app:layout_constraintTop_toBottomOf="@+id/detail_tv_cover"
             tools:src="@drawable/ic_launcher_foreground" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:foregroundGravity="center"
-            android:src="@drawable/ic_baseline_favorite_24"
-            app:backgroundTint="@color/purple_500"
-            app:layout_constraintBottom_toBottomOf="@+id/detail_tv_cover"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.955"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_tv_cover"
-            app:tint="@color/white" />
-
         <TextView
             android:id="@+id/detail_tv_title"
             android:layout_width="0dp"
@@ -82,7 +68,7 @@
             tools:text="TextView"
             android:textSize="16sp"
             android:textColor="@android:color/black"
-            app:layout_constraintEnd_toStartOf="@id/fab_detail"
+            app:layout_constraintEnd_toStartOf="@id/detail_tv_rate"
             app:layout_constraintHorizontal_bias="0.07"
             app:layout_constraintStart_toEndOf="@+id/detail_tv_img"
             app:layout_constraintTop_toBottomOf="@+id/detail_tv_cover" />
@@ -167,10 +153,11 @@
             tools:text="100%"
             android:textColor="@color/purple_500"
             android:textSize="20sp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintBottom_toTopOf="@+id/detail_tv_genres"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/detail_tv_title"
-            app:layout_constraintTop_toBottomOf="@+id/fab_detail"
+            app:layout_constraintTop_toTopOf="@+id/detail_tv_title"
             app:layout_constraintVertical_bias="1.0" />
 
         <TextView

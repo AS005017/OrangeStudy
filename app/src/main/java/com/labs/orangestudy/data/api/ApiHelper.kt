@@ -7,19 +7,11 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class ApiHelper @Inject constructor(private val api : TvApi) {
-    suspend fun getTvById(tvId: Int) : SimpleResponse<Tv> {
-        return safeApiCall { api.getTvById(tvId) }
+    suspend fun getTvById(tvId: Int) : Response<Tv> {
+        return  api.getTvById(tvId)
     }
 
-    suspend fun getPopularTv(pageIndex: Int): SimpleResponse<TvResponse> {
-        return safeApiCall { api.getPopularTv(pageIndex) }
-    }
-
-    private inline fun <T> safeApiCall(apiCall: () -> Response<T>): SimpleResponse<T> {
-        return try {
-            SimpleResponse.success(apiCall.invoke())
-        } catch (exception: Exception) {
-            SimpleResponse.failure(exception)
-        }
+    suspend fun getPopularTv(pageIndex: Int): Response<TvResponse> {
+        return api.getPopularTv(pageIndex)
     }
 }

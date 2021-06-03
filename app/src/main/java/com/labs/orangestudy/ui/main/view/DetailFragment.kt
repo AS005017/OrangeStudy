@@ -5,9 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.labs.orangestudy.R
 import com.labs.orangestudy.data.api.TvApi
 import com.labs.orangestudy.data.model.Tv
+import com.labs.orangestudy.data.paging.TvDataStorageSource
 import com.labs.orangestudy.databinding.FragmentDetailBinding
 import com.labs.orangestudy.ui.main.adapter.SeasonsAdapter
 import com.labs.orangestudy.ui.main.viewmodel.DetailViewModel
@@ -37,6 +36,11 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private val args:DetailFragmentArgs by navArgs()
     private val viewModel: DetailViewModel by viewModels()
+
+    private val localTvStorageSource: TvDataStorageSource.LocalTvStorage
+        get() {
+            return TvDataStorageSource.LocalTvStorage()
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,18 +60,28 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private fun setDataToViews() {
         val id = args.id
-        viewModel.refreshTv(id)
-        viewModel.networkState.observe(viewLifecycleOwner) { netState ->
-            binding.progressBarDetail.visibility = if (netState == NetworkState.LOADING) View.VISIBLE else View.GONE
-            if (netState == NetworkState.ERROR) {
-                Toast.makeText(
-                    context,
-                    context?.resources?.getString(R.string.you_in_offline),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        if (!isConnected()) {
+            viewModel.getTv(id)
+            viewModel.tvByIdLiveData.observe(viewLifecycleOwner) { response ->
+                binding.detailTvTitle.text = response.name
+            binding.detailTvLastAirDate.text = context?.resources?.getString(R.string.offline)
+            binding.detailTvRate.text = response.voteAverage.toString()
+            binding.detailTvDesc.text = response.overview
+            binding.detailTvSeasonsName.text = context?.resources?.getString(R.string.seasons_offline)
+            binding.detailTvSeasonsCount.text = context?.resources?.getString(R.string.offline)
 
+            Picasso.get()
+                .load(TvApi.POSTER_BASE_URL + response.backdropPath)
+                .placeholder(R.drawable.loading)
+                .into(binding.detailTvCover)
+
+            Picasso.get()
+                .load(TvApi.POSTER_BASE_URL + response.posterPath)
+                .placeholder(R.drawable.loading)
+                .into(binding.detailTvImg)
+            }
+        } else {
+            viewModel.refreshTv(id)
             viewModel.tvByIdLiveData.observe(viewLifecycleOwner) { response ->
                 if (response == null) {
                     Toast.makeText(context, "Error in call", Toast.LENGTH_SHORT).show()
@@ -99,32 +113,25 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                         i++
                     }
                 }
-
                 binding.detailTvGenres.text = genres
 
                 binding.RvSeasons.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
                 binding.RvSeasons.adapter = response.seasons?.let { SeasonsAdapter(it) }
 
+                //localTvStorageSource.putTv(response)
             }
-        if (!isConnected())   {
-            val realm: Realm = Realm.getDefaultInstance()
-            val tv = realm.where(Tv::class.java).equalTo("id", id).findFirst()
-            binding.detailTvTitle.text = tv?.name
-            binding.detailTvLastAirDate.text = context?.resources?.getString(R.string.offline)
-            binding.detailTvRate.text = tv?.voteAverage.toString()
-            binding.detailTvDesc.text = tv?.overview
-            binding.detailTvSeasonsName.text = context?.resources?.getString(R.string.seasons_offline)
-            binding.detailTvSeasonsCount.text = context?.resources?.getString(R.string.offline)
+        }
 
-            Picasso.get()
-                .load(TvApi.POSTER_BASE_URL + tv?.backdropPath)
-                .placeholder(R.drawable.loading)
-                .into(binding.detailTvCover)
-
-            Picasso.get()
-                .load(TvApi.POSTER_BASE_URL + tv?.posterPath)
-                .placeholder(R.drawable.loading)
-                .into(binding.detailTvImg)
+        viewModel.networkState.observe(viewLifecycleOwner) { netState ->
+            binding.progressBarDetail.visibility =
+                if (netState == NetworkState.LOADING) View.VISIBLE else View.GONE
+            if (netState == NetworkState.ERROR) {
+                Toast.makeText(
+                    context,
+                    context?.resources?.getString(R.string.somthingWrong),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 

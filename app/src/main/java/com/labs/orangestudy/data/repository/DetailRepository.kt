@@ -9,10 +9,6 @@ import javax.inject.Singleton
 class DetailRepository @Inject constructor (private val apiHelper: ApiHelper) {
     suspend fun getTvById(tvId: Int): Tv? {
         val request = apiHelper.getTvById(tvId)
-
-        if (request.failed || !request.isSuccessful)
-            return null
-
-        return request.body
+        return request.body()
     }
 }

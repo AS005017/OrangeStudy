@@ -11,6 +11,8 @@ import com.labs.orangestudy.data.repository.TvRepository
 import com.magora.realmpaginator.RealmPagedList
 import com.magora.realmpaginator.RealmPagedListBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.realm.RealmResults
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,10 +23,10 @@ class TvViewModel @Inject constructor  (private val repository: TvRepository) : 
             return TvDataStorageSource.LocalTvStorage()
         }
 
-//    val  networkState : LiveData<NetworkState> by lazy {
-//        Transformations.switchMap<TvDataSource, NetworkState>(
-//            dataSourceFactory.tvLiveDataSource, TvDataSource::networkState)
-//    }
+    val  networkState : LiveData<NetworkState> by lazy {
+        Transformations.switchMap<TvDataSource, NetworkState>(
+            dataSourceFactory.tvLiveDataSource, TvDataSource::networkState)
+    }
 
     private val pageListConfig: RealmPagedList.Config = RealmPagedList.Config.Builder()
         .setPageSize(TvApi.POST_PER_PAGE)
@@ -36,8 +38,12 @@ class TvViewModel @Inject constructor  (private val repository: TvRepository) : 
     val tvPagedListLiveData: RealmPagedList<Int,Tv> =
         RealmPagedListBuilder(dataSourceFactory,pageListConfig).setInitialLoadKey(1).setRealmData(localTvStorageSource.getTvs().tvs).build()
 
-//    fun listIsEmpty(): Boolean {
-//        return tvPagedListLiveData.value?.isEmpty() ?: true
-//    }
+    fun refresh() {
+        dataSourceFactory.tvLiveDataSource.value?.invalidate(key = 1)
+    }
+
+    fun listIsEmpty(): Boolean {
+        return tvPagedListLiveData.isEmpty()
+    }
 
 }

@@ -10,11 +10,6 @@ import javax.inject.Singleton
 class TvRepository @Inject constructor (private val apiHelper: ApiHelper) {
     suspend fun getTvList(pageIndex: Int): TvResponse? {
         val request = apiHelper.getPopularTv(pageIndex)
-
-        if (request.failed || !request.isSuccessful) {
-            return null
-        }
-
-        return request.body
+        return request.body()
     }
 }

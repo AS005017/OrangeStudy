@@ -1,8 +1,13 @@
 package com.labs.orangestudy.ui
 
+import android.app.SearchManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.widget.SearchView
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.labs.orangestudy.R
 import com.labs.orangestudy.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,5 +24,6 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
     }
+
 
 }
