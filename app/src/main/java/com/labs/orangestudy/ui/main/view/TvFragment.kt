@@ -27,7 +27,6 @@ import io.realm.Realm
 class TvFragment : Fragment(R.layout.fragment_tv){
 
     private val tvViewModel: TvViewModel by viewModels()
-    private val searchViewModel: SearchViewModel by viewModels()
 
     private var _binding: FragmentTvBinding? = null
     private val binding get() = _binding!!

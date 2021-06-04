@@ -46,6 +46,9 @@ class SearchFragment : Fragment(R.layout.fragment_tv) {
             Log.e("SearchRes", it.toString())
             binding.swipeRefresh.isRefreshing = false
 
+            if(it.size == 0) {
+                binding.txtErrorPopular.visibility = View.VISIBLE
+            }
             (binding.rvTv.adapter as SearchAdapter).onItemClick = { tv ->
                 val action = SearchFragmentDirections.searchFragmentToDetailFragment(tv.id)
                 Navigation.findNavController(binding.root).navigate(action)
