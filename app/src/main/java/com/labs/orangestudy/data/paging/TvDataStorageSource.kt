@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.annotation.UiThread
 import com.labs.orangestudy.data.model.Tv
 import com.labs.orangestudy.data.model.TvList
-import io.realm.Realm
-import io.realm.RealmChangeListener
-import io.realm.RealmList
-import io.realm.RealmResults
+import io.realm.*
 import io.realm.kotlin.addChangeListener
 import io.realm.kotlin.createObject
 import io.realm.kotlin.isValid
@@ -50,7 +47,7 @@ class TvDataStorageSource {
         @UiThread
         suspend fun findTvAsync(name: String): RealmResults<Tv> = suspendCancellableCoroutine { continuation ->
             with(ensureRealmCreated()) {
-                val tvWrapper = where<Tv>().equalTo("name", name).findAllAsync()
+                val tvWrapper = where<Tv>().contains("name", name, Case.INSENSITIVE).findAllAsync()
                 tvWrapper.addChangeListener(RealmChangeListener { tv ->
                     if (tv.isValid()) {
                         continuation.resume(tv)

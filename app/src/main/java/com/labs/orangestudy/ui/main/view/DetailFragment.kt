@@ -63,7 +63,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         if (!isConnected()) {
             viewModel.getTv(id)
             viewModel.tvByIdLiveData.observe(viewLifecycleOwner) { response ->
-                binding.detailTvTitle.text = response.name
+
+            binding.detailTvTitle.text = response.name
             binding.detailTvLastAirDate.text = context?.resources?.getString(R.string.offline)
             binding.detailTvRate.text = response.voteAverage.toString()
             binding.detailTvDesc.text = response.overview

@@ -19,7 +19,6 @@ import com.labs.orangestudy.ui.main.adapter.TvAdapterPagedList
 import com.labs.orangestudy.ui.main.viewmodel.SearchViewModel
 import com.labs.orangestudy.ui.main.viewmodel.TvViewModel
 import com.labs.orangestudy.utils.NetworkState
-import com.labs.orangestudy.utils.onQueryTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import io.realm.Realm
 
@@ -60,18 +59,14 @@ class TvFragment : Fragment(R.layout.fragment_tv){
         binding.rvTv.adapter = tvAdapter
         binding.swipeRefresh.setOnRefreshListener {
             realm.beginTransaction()
-            val notFavorite = realm.where(Tv::class.java).notEqualTo("favorite", true).findAll()
-            Log.e("DeleteFromRealm", notFavorite.size.toString())
-            notFavorite.deleteAllFromRealm()
+            val realmList = realm.where(Tv::class.java).findAll()
+            Log.e("DeleteFromRealm", realmList.size.toString())
+            realmList.deleteAllFromRealm()
             realm.commitTransaction()
             tvViewModel.refresh()
             binding.swipeRefresh.isRefreshing = false
         }
-//        tvViewModel.tvPagedListLiveData.observe(viewLifecycleOwner) { pagedList ->
-//                tvAdapter.submitList(pagedList)
-//                Log.e("TvList", pagedList.size.toString())
-//            }
-//
+
         tvViewModel.networkState.observe(viewLifecycleOwner) {
             binding.progressBarTv.visibility =
                 if (tvViewModel.listIsEmpty() && it == NetworkState.LOADING) View.VISIBLE else View.GONE
@@ -79,11 +74,12 @@ class TvFragment : Fragment(R.layout.fragment_tv){
                 if (tvViewModel.listIsEmpty() && it == NetworkState.ERROR) View.VISIBLE else View.GONE
 
         }
+
         (binding.rvTv.adapter as TvAdapterPagedList).onItemClick = { tv ->
                 val action = TvFragmentDirections.navigationTvToDetailFragment(tv.id)
                 Navigation.findNavController(binding.root).navigate(action)
-            }
-//        }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -91,10 +87,21 @@ class TvFragment : Fragment(R.layout.fragment_tv){
 
         var item = menu.findItem(R.id.action_search)
         val searchView: SearchView = item.actionView as SearchView
-        searchView.onQueryTextChanged {
-            //tvViewModel.searchQuery.value = it
-            Toast.makeText(context,it,Toast.LENGTH_LONG).show()
-        }
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener  {
+            override fun onQueryTextSubmit(subText: String?): Boolean {
+                //Toast.makeText(context,subText,Toast.LENGTH_LONG).show()
+                if (subText != null) {
+                    val action = TvFragmentDirections.navigationTvToSearchFragment(subText)
+                    Navigation.findNavController(binding.root).navigate(action)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+        })
     }
 
     override fun onDestroy() {

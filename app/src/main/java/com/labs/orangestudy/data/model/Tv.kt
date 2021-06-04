@@ -22,8 +22,7 @@ open class Tv(
     @SerializedName("overview") var overview: String = "",
     @SerializedName("poster_path") var posterPath: String? = "",
     @SerializedName("seasons") var seasons: RealmList<Season>? = null,
-    @SerializedName("vote_average") var voteAverage: Double? = 0.0,
-    var favorite: Boolean = false
+    @SerializedName("vote_average") var voteAverage: Double? = 0.0
     ) : RealmModel
 
 @RealmClass

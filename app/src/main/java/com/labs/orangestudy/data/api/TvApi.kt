@@ -23,4 +23,7 @@ interface TvApi {
 
     @GET("tv/{tv-id}?api_key=$API_KEY")
     suspend fun getTvById(@Path("tv-id") tvId: Int): Response<Tv>
+
+    @GET("search/tv?api_key=$API_KEY")
+    suspend fun getTvByName(@Query("query") query: String) : Response<TvResponse>
 }
